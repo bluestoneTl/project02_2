@@ -6,6 +6,7 @@ from hi_diff.utils.transforms import augment, paired_random_crop, random_augment
 from basicsr.utils import FileClient, imfrombytes, img2tensor
 from basicsr.utils.registry import DATASET_REGISTRY
 
+from hi_diff.utils import util
 
 @DATASET_REGISTRY.register()
 class PairedImageIRDataset(data.Dataset):
@@ -89,7 +90,20 @@ class PairedImageIRDataset(data.Dataset):
             img_gt, img_lq = paired_random_crop(img_gt, img_lq, gt_size, scale, gt_path)
             # flip, rotation
             # img_gt, img_lq = augment([img_gt, img_lq], self.opt['use_hflip'], self.opt['use_rot'])
-            img_gt, img_lq = random_augmentation(img_gt, img_lq)        # 原数据增强调用
+
+            # ========原数据增强调用========
+            # img_gt, img_lq = random_augmentation(img_gt, img_lq)       
+            # ========原数据增强调用======== 
+
+            #=========新数据增强调用=========
+            img_lq, img_gt = util.augment(
+                [img_lq, img_gt],
+                self.opt["use_flip"],
+                self.opt["use_rot"],
+                self.opt["mode"],
+                self.opt["use_swap"],
+            )
+            #=========新数据增强调用=========
 
         # # color space transform
         # if 'color' in self.opt and self.opt['color'] == 'y':

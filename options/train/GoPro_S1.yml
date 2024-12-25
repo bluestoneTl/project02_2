@@ -33,6 +33,12 @@ datasets:
     dataset_enlarge_ratio: 1
     prefetch_mode: ~
 
+#=========新数据增强调用=========
+    use_flip: true
+    use_rot: true
+    mode: LQGT
+#=========新数据增强调用=========
+
   val:
     name: ValSet
     type: PairedImageIRDataset
